@@ -23,6 +23,22 @@
     </colgroup>
 
     <thead>
+      <tr v-if="phaseList && phaseList.length">
+        <th
+          v-for="(phase, index) in phaseList"
+          :key="index"
+          :colspan="calcPhaseColspan(phase)"
+          class="xg-gantt-header-cell phase-header"
+          :style="{
+            'border-color': $styleBox.borderColor,
+            color: $styleBox.headerStyle?.textColor,
+            backgroundColor:
+              $styleBox.headerStyle?.bgColor || $styleBox.primaryColor
+          }"
+        >
+          {{ phase.name }}
+        </th>
+      </tr>
       <tr v-for="(r, trIndex) in dateList" :key="trIndex">
         <th
           v-for="(c, i) in r"
@@ -61,8 +77,10 @@ import useGanttWidth from '@/composables/useGanttWidth';
 import useStyle from '@/composables/useStyle';
 import useParam from '@/composables/useParam';
 import useElement from '@/composables/useElement';
-import { onMounted, onUpdated } from 'vue';
+import { onMounted, onUpdated, ref, watch } from 'vue';
 import useGanttHeader from '@/composables/useGanttHeader';
+import usePhases from '@/composables/usePhases'; // 新增阶段数据
+import { PhaseItem } from '@/models/data/phases';
 
 const { $param } = useParam();
 const { $styleBox } = useStyle();

@@ -14,6 +14,13 @@ export default {
     type: Array as PropType<any[]>,
     default: () => []
   },
+  /**
+  * 阶段列表
+  */
+  phases: {
+    type: Array as PropType<any[]>,
+    default: () => []
+  },
 
   links: {
     type: Array as PropType<any[]>,
@@ -129,10 +136,10 @@ export default {
     type: Boolean,
     default: true
   },
-   /**
-   * 展开的层级
-   */
-   expandIndex: {
+  /**
+  * 展开的层级
+  */
+  expandIndex: {
     type: Number,
     default: -1
   },
