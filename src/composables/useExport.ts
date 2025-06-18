@@ -97,6 +97,13 @@ export default () => {
     return (-c / 2) * (t * (t - 2) - 1) + b;
   }
 
+  function jumpToVerticalDimension(dimension: number) {
+    if (!ganttRef.value) return;
+    const top = dimension || (ganttRef.value.$el.scrollTop ?? 0);
+    console.log("ganttRef.value.$el.scrollTop", top);
+    ganttRef.value?.$el.scrollTo(0, top);
+  }
+
   function jumpToDate(_date: Date | undefined) {
     if (!ganttRef.value) return;
 
@@ -156,6 +163,7 @@ export default () => {
 
   return {
     setSelected,
-    jumpToDate
+    jumpToDate,
+    jumpToVerticalDimension
   };
 };

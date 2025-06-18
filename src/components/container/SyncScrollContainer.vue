@@ -1,9 +1,5 @@
 <template>
-  <div
-    ref="divRef"
-    class="xg-scroll-container"
-    :class="{ 'xg-scroll-container__hide-scroll': hideScroll }"
-  >
+  <div ref="divRef" class="xg-scroll-container" :class="{ 'xg-scroll-container__hide-scroll': hideScroll }">
     <slot />
   </div>
 </template>
@@ -101,6 +97,18 @@ function handleScroll(e: any) {
     });
   });
 }
+
+onActivated(() => {
+  const container = divRef.value;
+  if (container) {
+    container.scrollTo({ top: scrollTop, left: scrollLeft })
+  }
+})
+
+onDeactivated(() => {
+  scrollTop = scrollAction.y;
+  scrollLeft = scrollAction.x;
+})
 
 onMounted(() => {
   const container = divRef.value;

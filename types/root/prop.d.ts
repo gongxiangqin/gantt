@@ -157,6 +157,11 @@ export declare const props: {
   expandAll: boolean;
 
   /**
+   * 展开的层级，默认展开所有
+   * @default 0
+   */
+  expandIndex: number;
+  /**
    * 甘特图表的每一列宽度
    * @default 'normal'
    *
@@ -297,6 +302,11 @@ export declare interface RootMethods extends MethodOptions {
    * 跳转到指定日期（没有参数跳转到今天）。如果找不到日期，抛出 no-date-error 事件
    */
   jumpToDate: (date: Date | undefined) => void;
+  
+  /**
+   * 滚动到垂直方向指定未知。
+   */
+  jumpToVerticalDimension: (dimension: number) => void;
 }
 
 export declare interface RootEmits extends ObjectEmitsOptions {

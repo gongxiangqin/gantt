@@ -30,7 +30,7 @@ export default () => {
       val => {
         // 更新数据
         store.$data.update(val.value, options);
-
+        store.$data.updateExpand(props.expandAll, props.expandIndex);
         setGanttHeaders();
       },
       { deep: true }
@@ -48,6 +48,13 @@ export default () => {
       () => props.expandAll,
       val => {
         store.$data.updateExpand(!props.showExpand || val);
+        store.$links.update(store.$data.flatData);
+      }
+    );
+    watch(
+      () => props.expandIndex,
+      val => {
+        store.$data.updateExpand(false, props.expandIndex);
         store.$links.update(store.$data.flatData);
       }
     );

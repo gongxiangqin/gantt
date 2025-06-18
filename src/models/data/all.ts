@@ -134,11 +134,12 @@ export default class AllData {
   /**
    * 数据全部展开/闭合
    */
-  updateExpand(expand: boolean) {
+  updateExpand(expand: boolean, expandIndex?: number) {
     const fn = (data: RowItem[]) => {
-      data.forEach(row => {
-        row.setExpand(expand);
 
+      data.forEach((row, index) => {
+
+        row.setExpand(expand || expandIndex === index);
         if (row.children?.length > 0) {
           fn(row.children);
         }

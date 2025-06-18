@@ -129,7 +129,13 @@ export default {
     type: Boolean,
     default: true
   },
-
+   /**
+   * 展开的层级
+   */
+   expandIndex: {
+    type: Number,
+    default: -1
+  },
   /**
    * 甘特图表的每一列宽度
    */

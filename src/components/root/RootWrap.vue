@@ -44,7 +44,9 @@ const setSelected = (args: any) => {
 const jumpToDate = (args: any) => {
   return (rootWrapRef.value as any)?.jumpToDate(args);
 };
-
+const jumpToVerticalDimension = (dimension: number) => {
+  return (rootWrapRef.value as any)?.jumpToVerticalDimension(dimension);
+};
 // ***** 对外方法 ***** //
 defineExpose({
   /**
@@ -55,6 +57,10 @@ defineExpose({
   /**
    * 跳转到指定日期（没有参数跳转到今天）。如果找不到日期，抛出 no-date-error 事件
    */
-  jumpToDate
+  jumpToDate,
+  /**
+   * 滚动到垂直方向指定未知。
+   */
+   jumpToVerticalDimension
 });
 </script>
