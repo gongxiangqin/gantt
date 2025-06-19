@@ -23,7 +23,7 @@
   <!-- 使用 v-if 可以避免上面问题。但是如果数据量大，每次切换会有等待时间，同样值得解决 -->
   <div v-if="!isMulti" aria-label="单页">
     <div style="height: 400px; padding-bottom: 10px">
-      <XGantt ref="gantt" :row-height="rowHeight1" data-id="id" start-key="plainStarTime"
+      <XGantt ref="gantt" :row-height="40" data-id="id" start-key="plainStarTime"
         end-key="plainEndTime" expand-all highlight-date 
         locale="zh-cn" :dark="isDark" :gantt-column-size="colSize" :show-checkbox="showCheckbox"
         :show-weekend="showWeekend" :show-today="showToday" :show-expand="showExpand" :holidays="[
@@ -401,7 +401,7 @@ export default defineComponent({
         this.dataList[index]['children'].push({
           id: INDEX++,
           plainStarTime: `2023-08-${1}`,
-          plainEndTime: `2023-9-${10} 23:59:59`,
+          plainEndTime: `2023-8-${10} 23:59:59`,
           // startTime: `2023-08-${8}`,
           // endTime: `2023-09-${24}`,
           name: '子数据: ' + INDEX,
@@ -424,7 +424,7 @@ export default defineComponent({
       {
         name: '开发阶段',
         startDate: '2023-08-15', // 添加startDate
-        endDate: '2023-9-10 23:59:59'
+        endDate: '2023-8-25 23:59:59'
       }
     ];
 

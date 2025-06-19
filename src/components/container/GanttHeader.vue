@@ -2,7 +2,7 @@
   <table
     ref="ganttHeaderRef"
     class="xg-gantt-header"
-    :style="{ height: `${$param.headerHeight}px` }"
+    :style="{ height: `${$param.headerHeight}px`, backgroundColor: 'white' }"
     cellpadding="0"
     cellspacing="0"
     border="0"
