@@ -1,5 +1,9 @@
 <template>
-  <div ref="divRef" class="xg-scroll-container" :class="{ 'xg-scroll-container__hide-scroll': hideScroll }">
+  <div
+    ref="divRef"
+    class="xg-scroll-container"
+    :class="{ 'xg-scroll-container__hide-scroll': hideScroll }"
+  >
     <slot />
   </div>
 </template>
@@ -8,7 +12,7 @@
 // This component idea from https://github.com/metawin-m/vue-scroll-sync
 import useBus from '@/composables/useBus';
 import { uuid } from '@/utils/common';
-import { onMounted, reactive, ref } from 'vue';
+import { onActivated, onDeactivated, onMounted, reactive, ref } from 'vue';
 import useParam from '@/composables/useParam';
 
 const props = defineProps({
@@ -101,14 +105,14 @@ function handleScroll(e: any) {
 onActivated(() => {
   const container = divRef.value;
   if (container) {
-    container.scrollTo({ top: scrollTop, left: scrollLeft })
+    container.scrollTo({ top: scrollTop, left: scrollLeft });
   }
-})
+});
 
 onDeactivated(() => {
   scrollTop = scrollAction.y;
   scrollLeft = scrollAction.x;
-})
+});
 
 onMounted(() => {
   const container = divRef.value;

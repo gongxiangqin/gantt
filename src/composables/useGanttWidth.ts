@@ -48,7 +48,7 @@ export default () => {
         // 计算全量之前的日期长度
         const d = new XDate(date);
         if (store.ganttHeader.unit === 'week') {
-          return day(date).weekday() + 1;
+          return day(date).weekday();
         }
 
         return d.getBy(headerShowUnit.value);

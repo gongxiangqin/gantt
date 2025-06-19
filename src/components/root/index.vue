@@ -177,10 +177,10 @@ const { tableWidth } = useTableWidth();
 // #endregion
 
 // #region 初始化各种数据
-const { data, links } = toRefs(props);
+const { data, links, phases } = toRefs(props);
 
 const { initData } = useData();
-initData(data, props);
+initData(data, props, phases);
 
 const { initLinks } = useLinks();
 initLinks(links);

@@ -136,9 +136,7 @@ export default class AllData {
    */
   updateExpand(expand: boolean, expandIndex?: number) {
     const fn = (data: RowItem[]) => {
-
       data.forEach((row, index) => {
-
         row.setExpand(expand || expandIndex === index);
         if (row.children?.length > 0) {
           fn(row.children);

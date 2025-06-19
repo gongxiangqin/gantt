@@ -3,24 +3,16 @@
     <img src="@/assets/logo.png" alt="" width="500" />
   </div>
 
-  <div
-    style="
+  <div style="
       display: flex;
       justify-content: center;
       margin-bottom: 10px;
       gap: 10px;
-    "
-  >
-    <button
-      :style="{ backgroundColor: !isMulti ? 'aqua' : '' }"
-      @click="() => (isMulti = false)"
-    >
+    ">
+    <button :style="{ backgroundColor: !isMulti ? 'aqua' : '' }" @click="() => (isMulti = false)">
       单页
     </button>
-    <button
-      :style="{ backgroundColor: isMulti ? 'aqua' : '' }"
-      @click="() => (isMulti = true)"
-    >
+    <button :style="{ backgroundColor: isMulti ? 'aqua' : '' }" @click="() => (isMulti = true)">
       多页
     </button>
   </div>
@@ -31,41 +23,16 @@
   <!-- 使用 v-if 可以避免上面问题。但是如果数据量大，每次切换会有等待时间，同样值得解决 -->
   <div v-if="!isMulti" aria-label="单页">
     <div style="height: 400px; padding-bottom: 10px">
-      <XGantt
-        ref="gantt"
-        header-height="48"
-        :row-height="rowHeight1"
-        data-id="id"
-        start-key="startTime"
-        end-key="endTime"
-        expand-all
-        highlight-date
-        locale="zh-cn"
-        :dark="isDark"
-        :gantt-column-size="colSize"
-        :show-checkbox="showCheckbox"
-        :show-weekend="showWeekend"
-        :show-today="showToday"
-        :show-expand="showExpand"
-        :holidays="[
+      <XGantt ref="gantt" :row-height="rowHeight1" data-id="id" start-key="plainStarTime"
+        end-key="plainEndTime" expand-all highlight-date 
+        locale="zh-cn" :dark="isDark" :gantt-column-size="colSize" :show-checkbox="showCheckbox"
+        :show-weekend="showWeekend" :show-today="showToday" :show-expand="showExpand" :holidays="[
           { date: '2023-8-5', color: '#f00' },
           { date: '2023-8-8', color: 'green' }
-        ]"
-        :data="dataList"
-        :unit="unit"
-        :links="linkList"
-        :draggable="draggable"
-        :header-style="headerStyle"
-        :body-style="bodyStyle"
-        :level-color="levelColor"
-        @row-click="rowClick"
-        @row-dbl-click="rowDblClick"
-        @row-checked="rowChecked"
-        @move-slider="moveSlider"
-        @move-progress="moveProgress"
-        @add-link="onAddLink"
-        @no-date-error="noDateError"
-      >
+        ]" :data="dataList" :phases="phases" unit="day" :links="linkList" :draggable="draggable" :header-style="headerStyle"
+         :level-color="levelColor" @row-click="rowClick" @row-dbl-click="rowDblClick"
+        @row-checked="rowChecked" @move-slider="moveSlider" @move-progress="moveProgress" @add-link="onAddLink"
+        @no-date-error="noDateError">
         <!-- 无效 slot -->
         <template>
           <div>123</div>
@@ -77,31 +44,11 @@
         <!-- 无效 slot -->
         <div>b</div>
 
-        <XGanttSlider
-          prop="startTime"
-          date-format="MM-dd H:mm:s"
-          empty-data=""
-          :move="handleMove"
-          :resize-left="true"
-          :resize-right="true"
-          :linked-resize="true"
-          :progress="useProgress"
-          progress-decimal
-          move-by-unit
-        >
-          <!-- <template v-slot="row">
-          <div>{{ row.name }}</div>
-        </template> -->
+        <XGanttSlider date-format="MM-dd H:mm:s" empty-data="" :move="handleMove" :resize-left="true"
+          :resize-right="true" :linked-resize="true" :progress="useProgress" progress-decimal move-by-unit>
           <template #content="{ row, level }">
             <div v-if="level === 1" class="slider-level-one"></div>
-            <!-- <div v-else style="background-color: #123456; height: 5px"></div> -->
           </template>
-          <!-- <template #left>
-          <div style="background-color: #123456; width: 5px; height: 10px" />
-        </template>
-        <template #right>
-          <div style="background-color: #123456; width: 5px; height: 10px" />
-        </template> -->
         </XGanttSlider>
 
         <XGanttColumn prop="id" :merge="merge3" width="150">
@@ -112,7 +59,7 @@
           </template>
         </XGanttColumn>
 
-        <XGanttColumn prop="name" width="150" :merge="merge3">
+        <!-- <XGanttColumn prop="name" width="150" :merge="merge3">
           <template #default="{ row }">
             <div>2 - {{ row }}</div>
           </template>
@@ -121,34 +68,29 @@
             <div>
               <div>name---{{ data }}</div>
               <div>line2</div>
-              <!-- <div>{{ a }}</div> -->
             </div>
           </template>
-        </XGanttColumn>
+        </XGanttColumn> -->
+<!-- 
+        <XGanttColumn prop="ttt.a" :merge="merge5" column-style="backgroundColor: #cde; padding-left: 10px"
+          column-class="test-class" /> -->
 
-        <XGanttColumn
-          prop="ttt.a"
-          :merge="merge5"
-          column-style="backgroundColor: #cde; padding-left: 10px"
-          column-class="test-class"
-        />
-
-        <XGanttColumn prop="bbb" :merge="merge5">
+        <!-- <XGanttColumn prop="bbb" :merge="merge5">
           <template #default>
             <div v-for="i in 100" :key="i">
               {{ i }}
             </div>
           </template>
-        </XGanttColumn>
+        </XGanttColumn> -->
 
-        <XGanttColumn label="时间">
-          <template #title="data">
+        <!-- <XGanttColumn label="时间"> -->
+          <!-- <template #title="data">
             <div style="padding: 12px 0">time from slot - {{ data }}</div>
-          </template>
+          </template> -->
 
-          <XGanttColumn prop="startTime" width="150" center :merge="merge4" />
+          <!-- <XGanttColumn prop="startTime" width="150" center :merge="merge4" /> -->
 
-          <x-gantt-column
+          <!-- <x-gantt-column
             prop="endTime"
             label="自定义标签"
             width="150"
@@ -164,14 +106,14 @@
             <template v-slot:title="data">
               <span>end time-{{ data }}</span>
             </template>
-          </x-gantt-column>
-        </XGanttColumn>
+          </x-gantt-column> -->
+        <!-- </XGanttColumn> -->
 
-        <XGanttColumn prop="picture12345" :merge="merge5" ellipsis>
+        <!-- <XGanttColumn prop="picture12345" :merge="merge5" ellipsis>
           <template #default="{ row }">
             👀😃✨✔🐱‍🚀🐱‍👓 {{ row.ttt.b }}
           </template>
-        </XGanttColumn>
+        </XGanttColumn> -->
       </XGantt>
     </div>
 
@@ -212,31 +154,12 @@
         <em>prop="name" date-format="MM-dd H:mm:ss"</em>
       </div>
       <div style="height: 200px; padding-bottom: 10px">
-        <XGantt
-          ref="gantt2"
-          header-height="60"
-          :row-height="rowHeight2"
-          data-id="index"
-          expand-all
-          :dark="isDark2"
-          :gantt-column-size="colSize2"
-          :show-checkbox="showCheckbox2"
-          :show-weekend="showWeekend2"
-          :show-today="showToday2"
-          :show-expand="showExpand2"
-          :unit="unit2"
-          :data="dataList2"
-          :links="linkList2"
-          :header-style="headerStyle2"
-          :body-style="bodyStyle2"
-          :level-color="levelColor2"
-          @row-click="rowClick"
-          @row-dbl-click="rowDblClick"
-          @row-checked="rowChecked"
-          @move-slider="moveSlider"
-          @add-link="onAddLink2"
-          @no-date-error="noDateError"
-        >
+        <XGantt ref="gantt2" header-height="60" :row-height="rowHeight2" data-id="index" expand-all :dark="isDark2"
+          :gantt-column-size="colSize2" :show-checkbox="showCheckbox2" :show-weekend="showWeekend2"
+          :show-today="showToday2" :show-expand="showExpand2" :unit="unit2" :data="dataList2" :links="linkList2"
+          :header-style="headerStyle2" :body-style="bodyStyle2" :level-color="levelColor2" @row-click="rowClick"
+          @row-dbl-click="rowDblClick" @row-checked="rowChecked" @move-slider="moveSlider" @add-link="onAddLink2"
+          @no-date-error="noDateError">
           <XGanttSlider prop="name" date-format="MM-dd H:mm:ss" empty-data="" />
 
           <XGanttColumn prop="index" :merge="merge3">
@@ -247,18 +170,9 @@
             </template>
           </XGanttColumn>
 
-          <x-gantt-column
-            prop="endDate"
-            label="自定义标签"
-            width="200"
-            date-format="q yyyy-MM-dd HH:mm:ss"
-            :merge="merge4"
-          >
+          <x-gantt-column prop="endDate" label="自定义标签" width="200" date-format="q yyyy-MM-dd HH:mm:ss" :merge="merge4">
             <template #default="{ row }">
-              <span
-                name="end"
-                :style="{ backgroundColor: `#${555}`, color: '#789' }"
-              >
+              <span name="end" :style="{ backgroundColor: `#${555}`, color: '#789' }">
                 abc - {{ row.endDate }}
               </span>
             </template>
@@ -286,14 +200,7 @@
       <button @click="() => (showExpand2 = !showExpand2)">显示expand</button>
       <button @click="setSelected2">设置选择</button>
       <button @click="jumpTo2">跳转到</button>
-      <input
-        type="range"
-        name=""
-        id=""
-        min="20"
-        max="70"
-        v-model="rowHeight2"
-      />
+      <input type="range" name="" id="" min="20" max="70" v-model="rowHeight2" />
       <div style="display: inline-block">
         选择列宽
         <button @click="() => (colSize2 = 'small')">小</button>
@@ -305,40 +212,14 @@
 
     <div style="padding-bottom: 10px">
       <div style="height: 300px; padding-bottom: 10px">
-        <XGantt
-          ref="gantt3"
-          header-height="30"
-          :row-height="rowHeight3"
-          data-id="uid"
-          expand-all
-          :dark="isDark3"
-          :gantt-column-size="colSize3"
-          :show-checkbox="showCheckbox3"
-          :show-weekend="showWeekend3"
-          :show-today="showToday3"
-          :show-expand="showExpand3"
-          :data="dataList3"
-          :links="linkList3"
-          :header-style="headerStyle3"
-          :body-style="bodyStyle3"
-          :level-color="levelColor3"
-          @row-click="rowClick"
-          @row-dbl-click="rowDblClick"
-          @row-checked="rowChecked"
-          @move-slider="moveSlider"
-          @add-link="onAddLink3"
-          @no-date-error="noDateError"
-        >
-          <XGanttSlider
-            prop="uid"
-            date-format="MM-dd H:mm:ss"
-            empty-data=""
-            :move="move3"
-            :resize-left="true"
-            :resize-right="true"
-            :linked-resize="true"
-            bg-color="lightgreen"
-          />
+        <XGantt ref="gantt3" header-height="30" :row-height="rowHeight3" data-id="uid" expand-all :dark="isDark3"
+          :gantt-column-size="colSize3" :show-checkbox="showCheckbox3" :show-weekend="showWeekend3"
+          :show-today="showToday3" :show-expand="showExpand3" :data="dataList3" :links="linkList3"
+          :header-style="headerStyle3" :body-style="bodyStyle3" :level-color="levelColor3" @row-click="rowClick"
+          @row-dbl-click="rowDblClick" @row-checked="rowChecked" @move-slider="moveSlider" @add-link="onAddLink3"
+          @no-date-error="noDateError">
+          <XGanttSlider prop="uid" date-format="MM-dd H:mm:ss" empty-data="" :move="move3" :resize-left="true"
+            :resize-right="true" :linked-resize="true" bg-color="lightgreen" />
 
           <XGanttColumn prop="name" width="150">
             <template #default="{ row }">
@@ -346,11 +227,8 @@
             </template>
           </XGanttColumn>
 
-          <XGanttColumn
-            prop="ttt.a"
-            column-style="backgroundColor: #cde; padding-left: 10px"
-            column-class="test-class"
-          />
+          <XGanttColumn prop="ttt.a" column-style="backgroundColor: #cde; padding-left: 10px"
+            column-class="test-class" />
         </XGantt>
       </div>
 
@@ -375,14 +253,7 @@
       <button @click="() => (showExpand3 = !showExpand3)">显示expand</button>
       <button @click="setSelected3">设置选择</button>
       <button @click="jumpTo3">跳转到</button>
-      <input
-        type="range"
-        name=""
-        id=""
-        min="20"
-        max="70"
-        v-model="rowHeight3"
-      />
+      <input type="range" name="" id="" min="20" max="70" v-model="rowHeight3" />
       <div style="display: inline-block">
         选择列宽
         <button @click="() => (colSize3 = 'small')">小</button>
@@ -396,9 +267,7 @@
 
   <div class="code-link">
     该页面源代码在
-    <a href="https://github.com/jeremyjone/jz-gantt/blob/master/src/App.vue"
-      >这里</a
-    >
+    <a href="https://github.com/jeremyjone/jz-gantt/blob/master/src/App.vue">这里</a>
   </div>
 </template>
 
@@ -418,8 +287,9 @@ export default defineComponent({
       isDark: false,
       useProgress: true,
       dataList: [] as any[],
+      phases: [] as any[],
       linkList: reactive([]) as any[],
-      rowHeight1: 30,
+      rowHeight1: 60,
       showCheckbox: true,
       showWeekend: true,
       showToday: true,
@@ -496,7 +366,7 @@ export default defineComponent({
     // 测试数据
     let s = 2;
     let e = 15;
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 10; i++) {
       if (s > e) {
         let t = s;
         s = e;
@@ -504,8 +374,10 @@ export default defineComponent({
       }
       this.dataList.push({
         id: INDEX++,
-        startTime: `2023-08-${s++}`,
-        endTime: `2023-08-${e++}`,
+        plainStarTime: `2023-08-${1} 00:00:00`,
+        plainEndTime: `2023-9-${10} 23:59:59`,
+        // startTime: `2023-08-${8}`,
+        // endTime: `2023-09-${24}`,
         ttt: {
           a: 'aaa',
           b: 'bbb'
@@ -516,7 +388,7 @@ export default defineComponent({
       if (e > 30) e = 5;
     }
     // 二级数据
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 10; i++) {
       if (s > e) {
         let t = s;
         s = e;
@@ -528,8 +400,10 @@ export default defineComponent({
 
         this.dataList[index]['children'].push({
           id: INDEX++,
-          startTime: `2023-08-${s++}`,
-          endTime: `2023-08-${e++}`,
+          plainStarTime: `2023-08-${1}`,
+          plainEndTime: `2023-9-${10} 23:59:59`,
+          // startTime: `2023-08-${8}`,
+          // endTime: `2023-09-${24}`,
           name: '子数据: ' + INDEX,
           ttt: {
             a: 's-aaa',
@@ -540,32 +414,19 @@ export default defineComponent({
       if (s > 30) s = 2;
       if (e > 30) e = 5;
     }
-    // 三级数据
-    for (let i = 0; i < 50; i++) {
-      if (s > e) {
-        let t = s;
-        s = e;
-        e = t;
-      }
-      [0, 2].forEach(index => {
-        if (this.dataList[0]['children'][index]['children'] === undefined)
-          this.dataList[0]['children'][index]['children'] = [];
 
-        this.dataList[0]['children'][index]['children'].push({
-          id: INDEX++,
-          startTime: `2023-08-${s++}`,
-          endTime: `2023-08-${e++}`,
-          name: '孙数据: ' + INDEX,
-          ttt: {
-            a: 'gs-aaa',
-            b: 'gs-bbb'
-          },
-          progress: Math.random()
-        });
-      });
-      if (s > 30) s = 2;
-      if (e > 30) e = 5;
-    }
+    this.phases = [
+      {
+        name: '设计阶段',
+        startDate: '2023-07-31',
+        endDate: '2023-08-15 23:59:59'
+      },
+      {
+        name: '开发阶段',
+        startDate: '2023-08-15', // 添加startDate
+        endDate: '2023-9-10 23:59:59'
+      }
+    ];
 
     // 添加2号数据
     this.dataList2 = [

@@ -61,6 +61,6 @@ defineExpose({
   /**
    * 滚动到垂直方向指定未知。
    */
-   jumpToVerticalDimension
+  jumpToVerticalDimension
 });
 </script>

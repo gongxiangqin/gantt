@@ -88,8 +88,38 @@ const { dateList } = useData();
 const { getGanttUnitColumnWidth } = useGanttWidth();
 const { ganttHeaderRef, updateHeaderHeight } = useElement();
 const { ganttHeader } = useGanttHeader();
+const { $phases } = usePhases(); // 获取阶段数据
+const phaseList = ref<PhaseItem[]>([]);
 onMounted(updateHeaderHeight);
 onUpdated(updateHeaderHeight);
+
+watch(
+  () => $phases?.phases,
+  newVal => {
+    if (newVal) {
+      phaseList.value = newVal;
+      console.log('阶段数据已更新', phaseList.value);
+      // nextTick(updateHeaderHeight); // 强制更新布局
+    }
+  },
+  { immediate: true, deep: true }
+);
+
+// 计算阶段占据的列数
+const calcPhaseColspan = (phase: PhaseItem) => {
+  console.log('计算阶段占据的列数', phase);
+  const startIndex = ganttHeader.datesByUnit.findIndex(
+    d =>
+      d.compareTo(phase.startDate) === 'r' ||
+      d.compareTo(phase.startDate) === 'e'
+  );
+  const endIndex = ganttHeader.datesByUnit.findIndex(
+    d =>
+      d.compareTo(phase.endDate) === 'r' || d.compareTo(phase.endDate) === 'e'
+  );
+  // endIndex = endIndex;
+  return endIndex - startIndex;
+};
 </script>
 
 <style lang="scss">
@@ -123,5 +153,10 @@ onUpdated(updateHeaderHeight);
   .highlight {
     filter: brightness(1.2);
   }
+}
+// 新增阶段样式
+.phase-header {
+  font-weight: bold;
+  // border-bottom: 2px solid #666 !important;
 }
 </style>

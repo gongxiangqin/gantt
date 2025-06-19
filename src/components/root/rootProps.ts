@@ -15,8 +15,8 @@ export default {
     default: () => []
   },
   /**
-  * 阶段列表
-  */
+   * 阶段列表
+   */
   phases: {
     type: Array as PropType<any[]>,
     default: () => []
@@ -137,8 +137,8 @@ export default {
     default: true
   },
   /**
-  * 展开的层级
-  */
+   * 展开的层级
+   */
   expandIndex: {
     type: Number,
     default: -1

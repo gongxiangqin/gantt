@@ -15,7 +15,7 @@ import {
   type DefineComponent
 } from 'vue';
 import EventBus from '@/utils/bus';
-import { AllData, AllLinks } from '@/models/data';
+import { AllData, AllLinks, Phases } from '@/models/data';
 import { GanttHeader, Param, SlotsBox, StyleBox } from '@/models/param';
 import { type LinkingItem } from '@/typings/link';
 
@@ -28,6 +28,9 @@ export const initStore = (emit: any) => {
 
   const data = reactive(new AllData());
   provide('$data', data);
+
+  const phases = reactive(new Phases());
+  provide('$phases', phases);
 
   const links = reactive(new AllLinks());
   provide('$links', links);
@@ -91,6 +94,10 @@ export const useStore = () => {
      * 展示的数据
      */
     $data: inject('$data') as AllData,
+    /**
+     *  阶段数据
+     */
+    $phases: inject('$phases') as Phases,
 
     /**
      * 连线数据

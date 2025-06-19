@@ -12,7 +12,8 @@ export default () => {
 
   function initData(
     data: Ref<any[]>,
-    props: ExtractPropTypes<typeof rootProps>
+    props: ExtractPropTypes<typeof rootProps>,
+    phases: Ref<any[]>
   ) {
     const options: DataOptions = {
       dataId: props.dataId,
@@ -22,7 +23,7 @@ export default () => {
     };
 
     store.$data.init(data.value, options);
-
+    store.$phases.init(phases.value);
     setGanttHeaders();
 
     watch(
