@@ -98,7 +98,6 @@ watch(
   newVal => {
     if (newVal) {
       phaseList.value = newVal;
-      console.log('阶段数据已更新', phaseList.value);
       // nextTick(updateHeaderHeight); // 强制更新布局
     }
   },
@@ -107,7 +106,6 @@ watch(
 
 // 计算阶段占据的列数
 const calcPhaseColspan = (phase: PhaseItem) => {
-  console.log('计算阶段占据的列数', phase);
   const startIndex = ganttHeader.datesByUnit.findIndex(
     d =>
       d.compareTo(phase.startDate) === 'r' ||

@@ -4,7 +4,7 @@
   "author": "jeremyjone",
   "license": "MIT",
   "private": false,
-  "version": "2.1.14",
+  "version": "2.1.15",
   "preview": false,
   "publishConfig": {
     "access": "public",
@@ -73,11 +73,7 @@
     "*.{vue,js,ts,jsx,tsx}": "eslint --fix"
   },
   "dependencies": {
-    "@vueuse/core": "^10.0.0",
-    "@vueuse/integrations": "^10.1.2",
-    "dayjs": "^1.11.7",
-    "lodash": "^4.17.21",
-    "sortablejs": "^1.15.0"
+    "@g/gantt": "git+https://github.com/gongxiangqin/gantt.git#master"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.1",
@@ -111,6 +107,7 @@
   },
   "standard-version": {
     "scripts": {
+      "prepare": "npm run build",
       "pretag": "bash ./scripts/update-doc.sh"
     }
   },
