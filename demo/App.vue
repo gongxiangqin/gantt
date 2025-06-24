@@ -23,14 +23,13 @@
   <!-- 使用 v-if 可以避免上面问题。但是如果数据量大，每次切换会有等待时间，同样值得解决 -->
   <div v-if="!isMulti" aria-label="单页">
     <div style="height: 400px; padding-bottom: 10px">
-      <XGantt ref="gantt" :row-height="40" data-id="id" start-key="plainStarTime"
-        end-key="plainEndTime" expand-all highlight-date 
-        locale="zh-cn" :dark="isDark" :gantt-column-size="colSize" :show-checkbox="showCheckbox"
-        :show-weekend="showWeekend" :show-today="showToday" :show-expand="showExpand" :holidays="[
-          { date: '2023-8-5', color: '#f00' },
+      <XGantt ref="gantt" :row-height="40" data-id="id" start-key="plainStarTime" end-key="plainEndTime"
+        :expand-all="false" :expand-index="0" highlight-date locale="zh-cn" :dark="isDark" :gantt-column-size="colSize"
+        :show-checkbox="showCheckbox" :show-weekend="showWeekend" :show-today="showToday" :show-expand="true" :holidays="[
+          // { date: '2023-8-5', color: '#f00' },
           { date: '2023-8-8', color: 'green' }
-        ]" :data="dataList" :phases="phases" unit="day" :links="linkList" :draggable="draggable" :header-style="headerStyle"
-         :level-color="levelColor" @row-click="rowClick" @row-dbl-click="rowDblClick"
+        ]" :data="dataList" :phases="phases" :unit="unit" :links="linkList" :draggable="draggable"
+        :header-style="headerStyle" :level-color="levelColor" @row-click="rowClick" @row-dbl-click="rowDblClick"
         @row-checked="rowChecked" @move-slider="moveSlider" @move-progress="moveProgress" @add-link="onAddLink"
         @no-date-error="noDateError">
         <!-- 无效 slot -->
@@ -71,7 +70,7 @@
             </div>
           </template>
         </XGanttColumn> -->
-<!-- 
+        <!-- 
         <XGanttColumn prop="ttt.a" :merge="merge5" column-style="backgroundColor: #cde; padding-left: 10px"
           column-class="test-class" /> -->
 
@@ -84,13 +83,13 @@
         </XGanttColumn> -->
 
         <!-- <XGanttColumn label="时间"> -->
-          <!-- <template #title="data">
+        <!-- <template #title="data">
             <div style="padding: 12px 0">time from slot - {{ data }}</div>
           </template> -->
 
-          <!-- <XGanttColumn prop="startTime" width="150" center :merge="merge4" /> -->
+        <!-- <XGanttColumn prop="startTime" width="150" center :merge="merge4" /> -->
 
-          <!-- <x-gantt-column
+        <!-- <x-gantt-column
             prop="endTime"
             label="自定义标签"
             width="150"
@@ -309,7 +308,7 @@ export default defineComponent({
       } as any,
       colSize: 'normal',
       showSettingBtn: true,
-      unit: 'day',
+      unit: 'week',
 
       isDark2: false,
       dataList2: reactive([]) as any[],
@@ -374,7 +373,7 @@ export default defineComponent({
       }
       this.dataList.push({
         id: INDEX++,
-        plainStarTime: `2023-08-${1} 00:00:00`,
+        plainStarTime: `2023-08-${7} 00:00:00`,
         plainEndTime: `2023-9-${10} 23:59:59`,
         // startTime: `2023-08-${8}`,
         // endTime: `2023-09-${24}`,
@@ -400,7 +399,7 @@ export default defineComponent({
 
         this.dataList[index]['children'].push({
           id: INDEX++,
-          plainStarTime: `2023-08-${1}`,
+          plainStarTime: `2023-08-${8}`,
           plainEndTime: `2023-8-${10} 23:59:59`,
           // startTime: `2023-08-${8}`,
           // endTime: `2023-09-${24}`,
@@ -415,16 +414,32 @@ export default defineComponent({
       if (e > 30) e = 5;
     }
 
+    let startDate = '2023-08-10';
+    let n = 0;
+    if (this.unit === 'week') {
+      n = 6;
+    } else if (this.unit == 'day') {
+      //获取startDate为星期数
+      n = new Date(startDate).getDay();
+    }
+    //开始时间减n天
+    const startDate2 = new Date(startDate);
+    startDate2.setDate(startDate2.getDate() - n);
+    startDate = startDate2.toISOString().split('T')[0];
+    console.log("startDate=======", startDate);
+
+    // let startDateWeek = moment(startDate).week();
+
     this.phases = [
       {
         name: '设计阶段',
-        startDate: '2023-07-31',
-        endDate: '2023-08-15 23:59:59'
+        startDate: startDate,
+        endDate: '2023-08-20 23:59:59'
       },
       {
         name: '开发阶段',
-        startDate: '2023-08-15', // 添加startDate
-        endDate: '2023-8-25 23:59:59'
+        startDate: '2023-08-21', // 添加startDate
+        endDate: '2023-8-27 23:59:59'
       }
     ];
 

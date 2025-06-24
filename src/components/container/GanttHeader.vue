@@ -23,7 +23,13 @@
     </colgroup>
 
     <thead>
-      <tr v-if="phaseList && phaseList.length">
+      <tr
+        v-if="
+          phaseList &&
+          phaseList.length &&
+          (ganttHeader.unit === 'week' || ganttHeader.unit === 'day')
+        "
+      >
         <th
           v-for="(phase, index) in phaseList"
           :key="index"
@@ -115,8 +121,8 @@ const calcPhaseColspan = (phase: PhaseItem) => {
     d =>
       d.compareTo(phase.endDate) === 'r' || d.compareTo(phase.endDate) === 'e'
   );
-  // endIndex = endIndex;
-  return endIndex - startIndex;
+  const res = (endIndex - startIndex) / (ganttHeader.unit === 'week' ? 7 : 1);
+  return Math.ceil(res);
 };
 </script>
 

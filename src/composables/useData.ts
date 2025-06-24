@@ -23,6 +23,7 @@ export default () => {
     };
 
     store.$data.init(data.value, options);
+    store.$data.updateExpand(props.expandAll, props.expandIndex);
     store.$phases.init(phases.value);
     setGanttHeaders();
 
