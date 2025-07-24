@@ -129,7 +129,6 @@ const calcPhaseColspan = (phase: PhaseItem, index: number) => {
     endIndex = ganttHeader.datesByUnit.length;
   }
   const res = (endIndex - startIndex) / (ganttHeader.unit === 'week' ? 7 : 1);
-  console.log('calcPhaseColspan====', startIndex, endIndex);
   return Math.ceil(res);
 };
 </script>

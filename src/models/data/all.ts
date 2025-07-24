@@ -219,9 +219,6 @@ export default class AllData {
       if (news[i].children) {
         this.__diff(data[i].children, news[i].children, options, data[i]);
       }
-
-      // 更新两头的日期
-      console.log('data[i]====', data[i]);
       this.__updateDate(data[i]);
 
       i++;

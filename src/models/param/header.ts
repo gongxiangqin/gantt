@@ -355,7 +355,6 @@ class GanttHeader extends Header {
 
     const start = this.start.date.getTime();
     const end = this.end.date.getTime();
-    console.log('this.end.date=====', this.end.date);
     // end = end + 24 * 60 * 60 * 1000 * (this.unit === 'week' ? 6 : 1);
     //
     // let endDate = moment(item.planFinishAt).subtract(endIndex, 'days');

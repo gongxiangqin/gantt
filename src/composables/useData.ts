@@ -32,7 +32,7 @@ export default () => {
       val => {
         // 更新数据
         store.$data.update(val.value, options);
-        store.$data.updateExpand(props.expandAll, props.expandIndex);
+        // store.$data.updateExpand(props.expandAll, props.expandIndex);
         setGanttHeaders();
       },
       { deep: true }

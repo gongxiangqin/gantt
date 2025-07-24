@@ -23,25 +23,24 @@
   <!-- 使用 v-if 可以避免上面问题。但是如果数据量大，每次切换会有等待时间，同样值得解决 -->
   <div v-if="!isMulti" aria-label="单页">
     <div style="height: 400px; padding-bottom: 10px">
-      <x-gantt ref="gantt" class="gantt" :data="dataList2" :phases="phases"
-            data-id="id" start-key="startDate" end-key="endDate" locale="zh-cn" :slider-into-view="true"
-            :bodyStyle="bodyStyle" :unit="unit" :format-gantt-header="unit =='day' ? 'D' : ''" :expand-all="false" primary-color="#f7f7f8"
-            :expand-index="1" :show-expand="true" @move-slider="moveSlider" @add-link="onAddLink"
-             header-height="55">
-            <x-gantt-column prop="name" label="名称" width="140">
-            </x-gantt-column>
+      <x-gantt ref="gantt" class="gantt" :data="dataList2" :phases="phases" data-id="id" start-key="startDate"
+        end-key="endDate" locale="zh-cn" :slider-into-view="true" :bodyStyle="bodyStyle" :unit="unit"
+        :format-gantt-header="unit == 'day' ? 'D' : ''" :expand-all="false" primary-color="#f7f7f8" :expand-index="0"
+        :show-expand="true" @move-slider="moveSlider" @add-link="onAddLink" header-height="55">
+        <x-gantt-column prop="name" label="名称" width="140">
+        </x-gantt-column>
 
-            <x-gantt-column prop="startDate" label="开始时间" width="100" date-format="YYYY-MM-DD" />
-            <x-gantt-column prop="endDate" label="结束时间" width="100" date-format="YYYY-MM-DD" />
-            <x-gantt-slider :progress="true" progress-color="#10d353" bg-color="#4195fbaa" :progress-decimal="true"
-                :move="true" :linked-resize="false" :resize-left="true" :resize-right="true" height="35%">
-                <template v-slot="{ row }">
-                    <div v-if="row.progress" style="height: 100%; line-height: normal; color: #fff">
-                        {{ (row.progress * 100).toFixed(0) + "%" }}
-                    </div>
-                </template>
-            </x-gantt-slider>
-        </x-gantt>
+        <x-gantt-column prop="startDate" label="开始时间" width="100" date-format="YYYY-MM-DD" />
+        <x-gantt-column prop="endDate" label="结束时间" width="100" date-format="YYYY-MM-DD" />
+        <x-gantt-slider :progress="true" progress-color="#10d353" bg-color="#4195fbaa" :progress-decimal="true"
+          :move="true" :linked-resize="false" :resize-left="true" :resize-right="true" height="35%">
+          <template v-slot="{ row }">
+            <div v-if="row.progress" style="height: 100%; line-height: normal; color: #fff">
+              {{ (row.progress * 100).toFixed(0) + "%" }}
+            </div>
+          </template>
+        </x-gantt-slider>
+      </x-gantt>
       <!-- <XGantt ref="gantt" :row-height="40" data-id="id" start-key="startDate" end-key="endDate"
         :expand-all="false" :expand-index="0" highlight-date locale="zh-cn" :dark="isDark" :gantt-column-size="colSize"
         :show-checkbox="showCheckbox" :show-weekend="showWeekend" :show-today="showToday" :show-expand="true" :holidays="[
@@ -398,7 +397,13 @@ export default defineComponent({
     ];
 
     this.dataList2 = [
-      { name: "规划阶段", startDate: "2025-5-01", endDate: "2025-05-31 23:59:59" },
+      {
+        name: "规划阶段", startDate: "2025-5-01", endDate: "2025-05-31 23:59:59", children: [
+          { name: "规划阶段1", startDate: "2025-5-01", endDate: "2025-05-31 23:59:59" },
+          { name: "规划阶段2", startDate: "2025-5-01", endDate: "2025-05-31 23:59:59" },
+          { name: "规划阶段3", startDate: "2025-5-01", endDate: "2025-05-31 23:59:59" }
+        ]
+      },
       { name: "概念阶段", startDate: "2025-05-31 23:59:59", endDate: "2025-06-17 23:59:59" },
       { name: "设计阶段", startDate: "2025-06-17 23:59:59", endDate: "2025-08-04 23:59:59" },
       { name: "开发阶段", startDate: "2025-08-04 23:59:59", endDate: "2025-09-28 23:59:59" },
