@@ -12,7 +12,7 @@
 // This component idea from https://github.com/metawin-m/vue-scroll-sync
 import useBus from '@/composables/useBus';
 import { uuid } from '@/utils/common';
-import { onActivated, onDeactivated, onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import useParam from '@/composables/useParam';
 
 const props = defineProps({
@@ -102,17 +102,20 @@ function handleScroll(e: any) {
   });
 }
 
-onActivated(() => {
-  const container = divRef.value;
-  if (container) {
-    container.scrollTo({ top: scrollTop, left: scrollLeft });
-  }
-});
+// onActivated(() => {
+//   const container = divRef.value;
+//   if (container) {
+//     // container.scrollTo({ top: scrollTop, left: scrollLeft });
+//     console.log('scrollTop====', scrollTop, scrollLeft);
+//   }
+// });
 
-onDeactivated(() => {
-  scrollTop = scrollAction.y;
-  scrollLeft = scrollAction.x;
-});
+// onDeactivated(() => {
+//   scrollTop = scrollAction.y;
+//   scrollLeft = scrollAction.x;
+
+//   console.log('scrollTop====', scrollTop, scrollLeft);
+// });
 
 onMounted(() => {
   const container = divRef.value;

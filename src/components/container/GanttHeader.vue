@@ -2,7 +2,11 @@
   <table
     ref="ganttHeaderRef"
     class="xg-gantt-header"
-    :style="{ height: `${$param.headerHeight}px`, backgroundColor: 'white' }"
+    :style="{
+      height: `${$param.headerHeight}px`,
+      backgroundColor: 'white',
+      width: `${ganttWidth}px`
+    }"
     cellpadding="0"
     cellspacing="0"
     border="0"
@@ -33,7 +37,7 @@
         <th
           v-for="(phase, index) in phaseList"
           :key="index"
-          :colspan="calcPhaseColspan(phase)"
+          :colspan="calcPhaseColspan(phase, index)"
           class="xg-gantt-header-cell phase-header"
           :style="{
             'border-color': $styleBox.borderColor,
@@ -91,7 +95,7 @@ import { PhaseItem } from '@/models/data/phases';
 const { $param } = useParam();
 const { $styleBox } = useStyle();
 const { dateList } = useData();
-const { getGanttUnitColumnWidth } = useGanttWidth();
+const { getGanttUnitColumnWidth, ganttWidth } = useGanttWidth();
 const { ganttHeaderRef, updateHeaderHeight } = useElement();
 const { ganttHeader } = useGanttHeader();
 const { $phases } = usePhases(); // 获取阶段数据
@@ -111,17 +115,21 @@ watch(
 );
 
 // 计算阶段占据的列数
-const calcPhaseColspan = (phase: PhaseItem) => {
+const calcPhaseColspan = (phase: PhaseItem, index: number) => {
   const startIndex = ganttHeader.datesByUnit.findIndex(
     d =>
       d.compareTo(phase.startDate) === 'r' ||
       d.compareTo(phase.startDate) === 'e'
   );
-  const endIndex = ganttHeader.datesByUnit.findIndex(
+  let endIndex = ganttHeader.datesByUnit.findIndex(
     d =>
       d.compareTo(phase.endDate) === 'r' || d.compareTo(phase.endDate) === 'e'
   );
+  if (index === phaseList.value.length - 1) {
+    endIndex = ganttHeader.datesByUnit.length;
+  }
   const res = (endIndex - startIndex) / (ganttHeader.unit === 'week' ? 7 : 1);
+  console.log('calcPhaseColspan====', startIndex, endIndex);
   return Math.ceil(res);
 };
 </script>

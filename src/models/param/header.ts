@@ -219,6 +219,7 @@ class GanttHeader extends Header {
   unit: HeaderDateUnit = 'day';
   minLength: number = 0;
   customFormatter?: string; // 自定义格式化。它只自定义下面日期一层，不能自定义上面范围
+  weekStartDay: string;
 
   /**
    * 设置日期
@@ -266,30 +267,43 @@ class GanttHeader extends Header {
     const columns: GanttColumn[] = [];
 
     const start = this.start.date.getTime();
-    const end = this.end.date.getTime();
-
+    let end = this.end.date.getTime();
+    if (this.unit === 'week') {
+      end = end + Variables.time.millisecondOf.week;
+    }
     // TODO 这里可以优化一下，直接一次循环就可以组成 headers。因为是固定格式
     let s: number;
     for (s = start; s <= end; ) {
       const d = new XDate(s);
-      d.startOf(this.unit);
       this.dates.push(d);
+      d.startOf(this.unit);
+      // this.dates.push(d);
       s += getMillisecondBy(this.unit, s);
     }
 
     // 保证要占满所有宽度
     while (this.dates.length < this.minLength) {
       const d = new XDate(s);
-      d.startOf(this.unit);
       this.dates.push(d);
+      d.startOf(this.unit);
       s += getMillisecondBy(this.unit, s);
     }
 
     let last: number;
     let i = -1;
     this.dates.forEach(date => {
+      // let newDate = date;
+      // 获取日期是当前月份第几天
+      const dayNum = date.date.getDate();
+      // 周显示date记录的为周结束周日的日期,如果是周显示且天数<4,并且往前移dayNum的天数算做上个月份
+      // 如2025年第22周日期为5/26 - 6/1,此时22周算为5月份
+      // 如2025年第27周日期为6/30 - 7/6,此时27周算为7月份
+      if (this.unit === 'week' && dayNum < 4) {
+        // 往前移4天
+        date.date.setDate(dayNum - dayNum);
+        // newDate = this.setDate(date.date.getDate() - weekNum);
+      }
       const cur = date.getBy(Variables.time.aggregation[this.unit] as DateUnit);
-
       if (cur !== last) {
         last = cur;
         columns.push(
@@ -341,12 +355,17 @@ class GanttHeader extends Header {
 
     const start = this.start.date.getTime();
     const end = this.end.date.getTime();
-
+    console.log('this.end.date=====', this.end.date);
+    // end = end + 24 * 60 * 60 * 1000 * (this.unit === 'week' ? 6 : 1);
+    //
+    // let endDate = moment(item.planFinishAt).subtract(endIndex, 'days');
+    // console.log('setDatesByUnit====', end);
     let s: number;
     for (s = start; s <= end; ) {
       this.datesByUnit.push(new XDate(s));
       s += getMillisecondBy(baseUnit(this.unit), s);
     }
+    // console.log('this.datesByUnit====', this.datesByUnit);
   }
 }
 

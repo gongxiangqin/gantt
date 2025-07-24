@@ -9,8 +9,8 @@
       margin-bottom: 10px;
       gap: 10px;
     ">
-    <button :style="{ backgroundColor: !isMulti ? 'aqua' : '' }" @click="() => (isMulti = false)">
-      单页
+    <button :style="{ backgroundColor: !isMulti ? 'aqua' : '' }" @click="() => jumpDebug()">
+      跳转
     </button>
     <button :style="{ backgroundColor: isMulti ? 'aqua' : '' }" @click="() => (isMulti = true)">
       多页
@@ -23,25 +23,33 @@
   <!-- 使用 v-if 可以避免上面问题。但是如果数据量大，每次切换会有等待时间，同样值得解决 -->
   <div v-if="!isMulti" aria-label="单页">
     <div style="height: 400px; padding-bottom: 10px">
-      <XGantt ref="gantt" :row-height="40" data-id="id" start-key="plainStarTime" end-key="plainEndTime"
+      <x-gantt ref="gantt" class="gantt" :data="dataList2" :phases="phases"
+            data-id="id" start-key="startDate" end-key="endDate" locale="zh-cn" :slider-into-view="true"
+            :bodyStyle="bodyStyle" :unit="unit" :format-gantt-header="unit =='day' ? 'D' : ''" :expand-all="false" primary-color="#f7f7f8"
+            :expand-index="1" :show-expand="true" @move-slider="moveSlider" @add-link="onAddLink"
+             header-height="55">
+            <x-gantt-column prop="name" label="名称" width="140">
+            </x-gantt-column>
+
+            <x-gantt-column prop="startDate" label="开始时间" width="100" date-format="YYYY-MM-DD" />
+            <x-gantt-column prop="endDate" label="结束时间" width="100" date-format="YYYY-MM-DD" />
+            <x-gantt-slider :progress="true" progress-color="#10d353" bg-color="#4195fbaa" :progress-decimal="true"
+                :move="true" :linked-resize="false" :resize-left="true" :resize-right="true" height="35%">
+                <template v-slot="{ row }">
+                    <div v-if="row.progress" style="height: 100%; line-height: normal; color: #fff">
+                        {{ (row.progress * 100).toFixed(0) + "%" }}
+                    </div>
+                </template>
+            </x-gantt-slider>
+        </x-gantt>
+      <!-- <XGantt ref="gantt" :row-height="40" data-id="id" start-key="startDate" end-key="endDate"
         :expand-all="false" :expand-index="0" highlight-date locale="zh-cn" :dark="isDark" :gantt-column-size="colSize"
         :show-checkbox="showCheckbox" :show-weekend="showWeekend" :show-today="showToday" :show-expand="true" :holidays="[
-          // { date: '2023-8-5', color: '#f00' },
           { date: '2023-8-8', color: 'green' }
-        ]" :data="dataList" :phases="phases" :unit="unit" :links="linkList" :draggable="draggable"
+        ]" :data="dataList2" :phases="dataList2" :unit="unit" :links="linkList" :draggable="true"
         :header-style="headerStyle" :level-color="levelColor" @row-click="rowClick" @row-dbl-click="rowDblClick"
         @row-checked="rowChecked" @move-slider="moveSlider" @move-progress="moveProgress" @add-link="onAddLink"
         @no-date-error="noDateError">
-        <!-- 无效 slot -->
-        <template>
-          <div>123</div>
-        </template>
-
-        <!-- 无效 slot -->
-        <div>a</div>
-
-        <!-- 无效 slot -->
-        <div>b</div>
 
         <XGanttSlider date-format="MM-dd H:mm:s" empty-data="" :move="handleMove" :resize-left="true"
           :resize-right="true" :linked-resize="true" :progress="useProgress" progress-decimal move-by-unit>
@@ -57,63 +65,7 @@
             </div>
           </template>
         </XGanttColumn>
-
-        <!-- <XGanttColumn prop="name" width="150" :merge="merge3">
-          <template #default="{ row }">
-            <div>2 - {{ row }}</div>
-          </template>
-
-          <template #title="data">
-            <div>
-              <div>name---{{ data }}</div>
-              <div>line2</div>
-            </div>
-          </template>
-        </XGanttColumn> -->
-        <!-- 
-        <XGanttColumn prop="ttt.a" :merge="merge5" column-style="backgroundColor: #cde; padding-left: 10px"
-          column-class="test-class" /> -->
-
-        <!-- <XGanttColumn prop="bbb" :merge="merge5">
-          <template #default>
-            <div v-for="i in 100" :key="i">
-              {{ i }}
-            </div>
-          </template>
-        </XGanttColumn> -->
-
-        <!-- <XGanttColumn label="时间"> -->
-        <!-- <template #title="data">
-            <div style="padding: 12px 0">time from slot - {{ data }}</div>
-          </template> -->
-
-        <!-- <XGanttColumn prop="startTime" width="150" center :merge="merge4" /> -->
-
-        <!-- <x-gantt-column
-            prop="endTime"
-            label="自定义标签"
-            width="150"
-            date-format="q yyyy-MM-dd HH:mm:ss"
-            :merge="merge4"
-          >
-            <template #default="{ row }">
-              <div :style="{ backgroundColor: `#${555}`, color: '#789' }">
-                abc - {{ row }}
-              </div>
-            </template>
-
-            <template v-slot:title="data">
-              <span>end time-{{ data }}</span>
-            </template>
-          </x-gantt-column> -->
-        <!-- </XGanttColumn> -->
-
-        <!-- <XGanttColumn prop="picture12345" :merge="merge5" ellipsis>
-          <template #default="{ row }">
-            👀😃✨✔🐱‍🚀🐱‍👓 {{ row.ttt.b }}
-          </template>
-        </XGanttColumn> -->
-      </XGantt>
+      </XGantt> -->
     </div>
 
     <div>total: {{ dataList.length }}</div>
@@ -272,6 +224,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
+import demo from './demo.vue';
 
 let INDEX = 1;
 let LINK_INDEX = 1;
@@ -293,7 +246,7 @@ export default defineComponent({
       showWeekend: true,
       showToday: true,
       showExpand: true,
-      draggable: false,
+      draggable: true,
       levelColor: ['azure', 'cornsilk'] as string[],
       headerStyle: {
         bgColor: '',
@@ -362,6 +315,7 @@ export default defineComponent({
   },
 
   created() {
+
     // 测试数据
     let s = 2;
     let e = 15;
@@ -443,27 +397,62 @@ export default defineComponent({
       }
     ];
 
-    // 添加2号数据
     this.dataList2 = [
-      {
-        index: INDEX++,
-        startDate: '2023-04-28',
-        endDate: '2023-05-10',
-        name: '2号数据: 1'
-      },
-      {
-        index: INDEX++,
-        startDate: '2023-05-11',
-        endDate: '2023-05-20',
-        name: '2号数据: 2'
-      },
-      {
-        index: INDEX++,
-        startDate: '2023-05-21',
-        endDate: '2023-05-30',
-        name: '2号数据: 3'
-      }
-    ];
+      { name: "规划阶段", startDate: "2025-5-01", endDate: "2025-05-31 23:59:59" },
+      { name: "概念阶段", startDate: "2025-05-31 23:59:59", endDate: "2025-06-17 23:59:59" },
+      { name: "设计阶段", startDate: "2025-06-17 23:59:59", endDate: "2025-08-04 23:59:59" },
+      { name: "开发阶段", startDate: "2025-08-04 23:59:59", endDate: "2025-09-28 23:59:59" },
+      { name: "EVT阶段", startDate: "2025-09-28 23:59:59", endDate: "2025-10-19 23:59:59" },
+      { name: "DVT阶段", startDate: "2025-10-19 23:59:59", endDate: "2025-12-01 23:59:59" },
+      { name: "验证阶段", startDate: "2025-12-01 23:59:59", endDate: "2025-12-21 23:59:59" },
+      { name: "发布阶段", startDate: "2025-12-21 23:59:59", endDate: "2026-01-18 23:59:59" },
+      { name: "在售阶段", startDate: "2026-01-18 23:59:59", endDate: "2026-03-31 23:59:59" }
+    ]
+
+    // phases======= [
+    //   {"name": "规划阶段", "startDate": "2025-04-19 59:59:59", "endDate": "2025-06-01 59:59:59"}, 
+    //   {"name": "概念阶段", "startDate": "2025-06-01 59:59:59", "endDate": "2025-06-15 59:59:59"}, 
+    //   {"name": "设计阶段", "startDate": "2025-06-15 59:59:59", "endDate": "2025-08-03 59:59:59"}, 
+    //   {"name": "开发阶段", "startDate": "2025-08-03 59:59:59", "endDate": "2025-09-28 59:59:59"}, 
+    //   {"name": "EVT阶段", "startDate": "2025-09-28 59:59:59", "endDate": "2025-10-19 59:59:59"}, 
+    //   {"name": "DVT阶段", "startDate": "2025-10-19 59:59:59", "endDate": "2025-11-30 59:59:59"}, 
+    //   {"name": "验证阶段", "startDate": "2025-11-30 59:59:59", "endDate": "2025-12-21 59:59:59"}, 
+    //   {"name": "发布阶段", "startDate": "2025-12-21 59:59:59", "endDate": "2026-01-18 59:59:59"}, 
+    //   {"name": "在售阶段", "startDate": "2026-01-18 59:59:59", "endDate": "2026-04-05 59:59:59"}]
+
+    this.phases = [
+      { name: "规划阶段", startDate: "2025-04-19 59:59:59", endDate: "2025-06-01 59:59:59" },
+      { name: "概念阶段", startDate: "2025-06-01 23:59:59", endDate: "2025-06-15 23:59:59" },
+      { name: "设计阶段", startDate: "2025-06-17 23:59:59", endDate: "2025-08-03 23:59:59" },
+      { name: "开发阶段", startDate: "2025-08-04 23:59:59", endDate: "2025-09-28 23:59:59" },
+      { name: "EVT阶段", startDate: "2025-09-28 23:59:59", endDate: "2025-10-19 23:59:59" },
+      { name: "DVT阶段", startDate: "2025-10-19 23:59:59", endDate: "2025-11-30 23:59:59" },
+      { name: "验证阶段", startDate: "2025-12-01 23:59:59", endDate: "2025-12-21 23:59:59" },
+      { name: "发布阶段", startDate: "2025-12-21 23:59:59", endDate: "2026-01-18 23:59:59" },
+      { name: "在售阶段", startDate: "2026-01-18 23:59:59", endDate: "2026-04-05 23:59:59" }
+    ]
+
+    // 添加2号数据
+    // this.dataList2 = [
+    //   {
+    //     index: INDEX++,
+    //     startDate: '2023-04-28',
+    //     endDate: '2023-05-10',
+    //     name: '2号数据: 1'
+    //   },
+    //   {
+    //     index: INDEX++,
+    //     startDate: '2023-05-11',
+    //     endDate: '2023-05-20',
+    //     name: '2号数据: 2'
+    //   },
+    //   {
+    //     index: INDEX++,
+    //     startDate: '2023-05-21',
+    //     endDate: '2023-05-30',
+    //     name: '2号数据: 3'
+    //   }
+    // ];
 
     // 添加3号数据
     this.dataList3 = [
@@ -511,6 +500,16 @@ export default defineComponent({
   },
 
   methods: {
+    jumpDebug: function () {
+      //跳转至 debug 页面
+      // this.$router.push('/debug'); 
+      // window.location.href = '/demo.html';
+      const debugPath = window.location.href.includes('localhost')
+        ? '/debug.html'  // 开发环境路径
+        : './debug.html'; // 生产环境路径
+
+      window.location.href = '/debug.html';
+    },
     rowClick: function (data: any) {
       console.log('click row data:', data);
     },

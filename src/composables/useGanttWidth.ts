@@ -48,7 +48,7 @@ export default () => {
         // 计算全量之前的日期长度
         const d = new XDate(date);
         if (store.ganttHeader.unit === 'week') {
-          return day(date).weekday();
+          return day(date).weekday() + 1;
         }
 
         return d.getBy(headerShowUnit.value);
@@ -76,7 +76,13 @@ export default () => {
   }
 
   const ganttWidth = computed(() => {
+    // if (store.ganttHeader.unit === 'week') {
+    //   return (
+    //     store.ganttHeader.datesByUnit.length * ganttColumnWidth.value
+    //   );
+    // } else {
     return store.ganttHeader.datesByUnit.length * ganttColumnWidth.value;
+    // }
   });
 
   const currentMillisecond = computed(() => {

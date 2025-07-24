@@ -50,7 +50,7 @@
     "demo/components/*.vue",
     "demo/*.ts",
     "tests/**/*.spec.ts"
-  ],
+, "demo/test.vue"  ],
   "exclude": [
     "node_modules",
     "**/old/**",

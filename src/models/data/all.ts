@@ -221,6 +221,7 @@ export default class AllData {
       }
 
       // 更新两头的日期
+      console.log('data[i]====', data[i]);
       this.__updateDate(data[i]);
 
       i++;
