@@ -43,6 +43,9 @@ const divRef = ref<HTMLDivElement>();
 
 // 判断页面上下左右的移动方向
 function scrollFunc(e: any) {
+  if (!e.target) {
+    return;
+  }
   const diffX = scrollAction.x - e.target?.scrollLeft;
   const diffY = scrollAction.y - e.target?.scrollTop;
 
@@ -73,6 +76,9 @@ function handleScroll(e: any) {
   }
 
   window.requestAnimationFrame(() => {
+    if (!e.target) {
+      return;
+    }
     const {
       scrollTop,
       scrollHeight,
