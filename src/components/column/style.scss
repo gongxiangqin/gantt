@@ -5,6 +5,11 @@
   box-sizing: border-box;
   border-right: 1px solid #e5e5e5;
 
+  .xg-table-cell-content {
+    display: flex;
+    flex-direction: row;
+  }
+
   &:nth-last-child(1) {
     border-right: 0px;
   }

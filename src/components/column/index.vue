@@ -15,7 +15,10 @@
         'border-color': $styleBox.borderColor
       }"
     >
-      <div :style="{ lineHeight: `${rowHeight}px`, height: `${rowHeight}px` }">
+      <div
+        class="xg-table-cell-content"
+        :style="{ lineHeight: `${rowHeight}px`, height: `${rowHeight}px` }"
+      >
         <div v-if="props.__index === 0" ref="selectionRef" class="prefix">
           <SelectionVue :data="data" :indent="20" />
         </div>

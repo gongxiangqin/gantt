@@ -399,7 +399,7 @@ export default defineComponent({
     this.dataList2 = [
       {
         name: "规划阶段", startDate: "2025-5-01", endDate: "2025-05-31 23:59:59", children: [
-          { name: "规划阶段1", startDate: "2025-5-01", endDate: "2025-05-31 23:59:59" },
+          { name: "规划阶段1规划阶段1", startDate: "2025-5-01", endDate: "2025-05-31 23:59:59" },
           { name: "规划阶段2", startDate: "2025-5-01", endDate: "2025-05-31 23:59:59" },
           { name: "规划阶段3", startDate: "2025-5-01", endDate: "2025-05-31 23:59:59" }
         ]
