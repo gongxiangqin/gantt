@@ -17,7 +17,12 @@
     >
       <div
         class="xg-table-cell-content"
-        :style="{ lineHeight: `${rowHeight}px`, height: `${rowHeight}px` }"
+        :style="{
+          lineHeight: `${rowHeight}px`,
+          height: `${rowHeight}px`,
+          display: 'flex',
+          flexDirection: 'row'
+        }"
       >
         <div v-if="props.__index === 0" ref="selectionRef" class="prefix">
           <SelectionVue :data="data" :indent="20" />
